@@ -1,2 +1,2 @@
 # blogger
-个人博客
+个人博客使用Django框架
