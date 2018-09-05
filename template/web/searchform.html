@@ -1,0 +1,77 @@
+{% extends 'web/bash.html' %}
+{% block title %}
+    学无止境
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+<article>
+    {# 二级标题 #}
+    <h1 class="t_nav">
+        <span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。
+        </span><a href="/" class="n1">网站首页</a><a href="/" class="n2">学无止境</a>
+    </h1>
+    {# 全部文章 #}
+    <div class="blogs">
+        <div class="mt20"></div>
+          {% for a in page %}
+        <li>
+            <span class="blogpic">
+                <a href="/app/show/{{ a.id }}">
+                    <img  width="" src="/media/{{ a.image }}">
+                </a>
+            </span>
+            <h3 class="blogtitle"><a href="/app/show/{{ a.id }}">{{ a.name }}</a></h3>
+            <div class="bloginfo">
+                <p>{{ a.desc }}</p>
+            </div>
+            <div class="autor">
+                <span class="lm">
+                    <a href="{% url 'app:pagetitle' %}?pageid=1&rost={{ a.ty.id }}"  target="_blank" class="classname">{{ a.ty.name }}</a>
+                </span>
+                <span class="dtime">{{ a.mod_time }}</span>
+                <span class="readmore"><a href="/app/show/{{ a.id }}">阅读原文</a></span>
+            </div>
+        </li>
+        {% endfor %}
+
+
+
+        <div class="pagelist">
+            <a href="/app/searchform/?pageid=1&search={{ search }}">第一页</a>
+
+            {% if page.has_previous %}
+                  <a href="/app/searchform/?pageid={{  page.previous_page_number }}&search={{ search }}">上一页</a>
+            {% endif %}
+
+
+            {% if  page.has_previous %}
+                <a href="/app/searchform/?pageid={{  page.previous_page_number }}&search={{ search }}">{{ page.previous_page_number }}</a>
+            {% endif %}
+
+            <a style="color:black;" href="#">{{  page.number }}</a>
+
+            {% if  page.has_next %}
+                <a href="/app/searchform/?pageid={{  page.next_page_number }}&search={{ search }}">{{  page.next_page_number }}</a>
+            {% endif %}
+
+            {% if  page.has_next %}
+                <a href="/app/searchform/?pageid={{  page.next_page_number }}&search={{ search }}">下一页</a>
+            {% endif %}
+
+            <a href="/app/searchform/?pageid={{  page.paginator.num_pages }}&search={{ search }}">最后一页</a>
+
+            </div>
+    </div>
+
+{# 侧边栏 #}
+{% block left %}
+     {{ block.super }}
+     {% block head %}
+     {% endblock %}
+{% endblock %}
+</article>
+
+{% endblock %}

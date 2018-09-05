@@ -1,0 +1,83 @@
+{% extends 'web/bash.html' %}
+{% block title %}
+博客首页
+{% endblock %}
+{# JScss引入 #}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+{# 导航下展示图片 #}
+
+<div class="picshow">
+  <ul>
+    <li><a href="/"><i><img src="/static/web/images/b01.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/web/images/b02.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/web/images/b03.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/web/images/b04.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+    <li><a href="/"><i><img src="/static/web/images/b05.jpg"></i>
+      <div class="font">
+        <h3>个人博客模板《早安》</h3>
+      </div>
+      </a></li>
+  </ul>
+</div>
+
+
+{# 页面主题框架 #}
+<article>
+    {# 文章主题 #}
+    <div class="blogs">
+        {% for a in article %}
+        <li>
+            <span class="blogpic">
+                <a href="/app/show/{{ a.id }}">
+                <img  width="" src="/media/{{ a.image }}">
+            </a>
+            </span>
+            <h3 class="blogtitle"><a href="/app/show/{{ a.id }}">{{ a.name }}</a></h3>
+            <div class="bloginfo">
+                <p>{{ a.desc }}</p>
+            </div>
+            <div class="autor">
+                <span class="lm">
+                    <a href="{% url 'app:pagetitle' %}?pageid=1&rost={{ a.ty.id }}"  target="_blank" class="classname">{{ a.ty.name }}</a>
+                </span>
+                <span class="dtime">{{ a.mod_time }}</span>
+                <span class="readmore"><a href="/app/show/{{ a.id }}">阅读原文</a></span>
+            </div>
+        </li>
+        {% endfor %}
+    </div>
+
+
+
+ {% block left %}
+  {{ block.super }}
+      {% block lmnav %}
+          {% endblock %}
+      {% endblock %}
+
+
+
+
+</article>
+
+{% endblock %}

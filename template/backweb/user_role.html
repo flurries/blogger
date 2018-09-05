@@ -1,0 +1,30 @@
+
+{% extends 'backweb/backbash.html' %}
+{% block title %}
+    角色与用户关系
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+<section class="rt_wrap content mCustomScrollbar">
+    <div class="rt_content">
+        <section>
+            <ul class="ulColumn2">
+                <form action=""  method="post">
+                    {% csrf_token %}
+                    {# 角色 #}
+                    <select name="username">
+                        {% for user in users %}
+                            <option  value ="{{ user.username }}">{{ user.username }}</option>
+                        {% endfor %}
+                    </select>
+                    <select name="role_name">
+                        {% for role in roles %}
+                            <option  value ="{{ role.r_name }}">{{ role.r_name }}</option>
+                        {% endfor %}
+                    </select>
+                    <input type="submit"  class="link_btn"/>
+                </form>
+{% endblock %}

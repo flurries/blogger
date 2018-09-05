@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>
+      {% block title %}
+      {% endblock %}
+    </title>
+            {% load static %}
+            <link href="{% static 'web/css/m.css' %}"     rel="stylesheet">
+            <link href="{% static 'web/css/base.css' %}"  rel="stylesheet">
+            <link href="{% static 'web/css/index.css' %}" rel="stylesheet">
+            <script src="{% static 'web/js/modernizr.js' %}"></script>
+            <script src="{% static 'web/js/jquery.js' %}"></script>
+
+            <script>window.onload = function ()
+            {
+                var oH2 = document.getElementsByTagName("h2")[0];
+                var oUl = document.getElementsByTagName("ul")[0];
+                oH2.onclick = function ()
+                {
+                    var style = oUl.style;
+                    style.display = style.display == "block" ? "none" : "block";
+                    oH2.className = style.display == "block" ? "open" : ""
+                }
+            }
+            </script>
+        {% block cssjs %}
+        {% endblock %}
+
+
+{##}
+{#<script>#}
+{#	$(#}
+{#    $.ajax({#}
+{#        type: 'get',#}
+{#        url: '/app/basha/',#}
+{#        success: function() {#}
+{#            console.log('请求成功');#}
+{#        },#}
+{#        error: function() {#}
+{#            console.log('请求失败~');#}
+{#        }#}
+{#    })#}
+{#    )#}
+{#</script>#}
+
+
+</head>
+<body>
+{# 导航栏 #}
+<header>
+  <div class="tophead">
+    <div class="logo"><a href="{% url 'app:index' %}">个人博客</a></div>
+    <nav class="topnav" id="topnav">
+      <ul>
+        <li><a href="{% url 'app:index'%}">网站首页</a></li>
+        <li><a href="{% url 'app:about'%}">关于我</a></li>
+        <li><a href="{% url 'app:pagetitle' %}?pageid=1&rost=all">学无止境</a></li>
+        <li><a href="{% url 'app:info'%}">慢生活</a></li>
+        <li><a href="{% url 'backweb:my_login' %}">后台</a></li>
+      </ul>
+    </nav>
+  </div>
+</header>
+
+
+
+
+
+
+{% block content %}
+    {% block left %}
+    {# 左侧边栏 #}
+<div class="sidebar">
+
+
+    {# 头像     #}
+    {% block head %}
+    <div class="about">
+        <div class="avatar"> <img src="/static/web/images/avatar.jpg" alt=""> </div>
+        <p class="abname">dancesmile | 杨青</p>
+        <p class="abposition">Web前端设计师、网页设计</p>
+        <div class="abtext"> 一个80后草根女站长！09年入行。一直潜心研究web前端技术，一边工作一边积累经验，分享一些个人博客模板，以及SEO优化等心得。
+        </div>
+    </div>
+    {% endblock %}
+
+
+
+
+
+    {# 搜索 #}
+    {% block seek %}
+    <div class="search">
+            {% csrf_token %}
+            <input name="searchform" id="keyboard" class="input_text" type="text">
+            <input name="Submit" class="input_submit" value="搜索" type="submit">
+    </div>
+
+        <script>
+            function s() {
+                var fruitName = $("#keyboard").val().trim();
+                location.href = '/app/searchform/?pageid=1&search=' + fruitName
+            }
+            $(".input_submit").on("click", s);
+        </script>
+
+
+
+
+
+
+     {# 栏目导航 #}
+    {% block lmnav %}
+    <div class="lmnav">
+            <h2 class="hometitle">栏目导航</h2>
+            <ul class="navbor">
+                <li><a href="#">关于我</a></li>
+                <li><a href="share.html">网站首页</a>
+                    <ul>
+                        <li><a href="list.html">个人博客模板</a></li>
+                        <li><a href="#">HTML5模板</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="#">学无止境</a>
+                    <ul>
+                        {% for type in types %}
+                        <li><a href="{% url 'app:pagetitle' %}?pageid=1&rost={{ type.id }}">{{ type.name }}</a></li>
+                        {% endfor %}
+
+                    </ul>
+                </li>
+                <li><a href="#">慢生活</a></li>
+            </ul>
+        </div>
+    {% endblock %}
+    {# 标签云 #}
+    <div class="cloud">
+        <h2 class="hometitle">标签云</h2>
+        <ul>
+            <a href="/">陌上花开</a>
+            <a href="/">css3</a>
+            <a href="/">html5</a>
+            <a href="/">python</a>
+            <a href="/">青春</a>
+            <a href="/">温暖</a>
+            <a href="/">阳光</a>
+            <a href="/">Django</a>
+            <a href="/">Flask</a>
+            <a href="/">科技</a>
+            <a href="/">索尼</a>
+        </ul>
+    </div>
+    {# 站长推荐 #}
+    <div class="paihang">
+        <h2 class="hometitle">站长推荐</h2>
+        <ul>
+            {% for ar in articles %}
+                {% if ar.is_recommend  == 1 %}
+            <li>
+                <b>
+                    <a href="/app/show/{{ ar.id }}" target="_blank">{{ ar.name }}</a>
+                </b>
+                <p>
+                    <i><img src="/media/{{ ar.image }}"></i>
+                    {{ ar.desc }}
+                </p>
+            </li>
+                 {% endif %}
+            {% endfor %}
+        </ul>
+    </div>
+    {# 官方微信 #}
+    <div class="weixin">
+        <h2 class="hometitle">官方微信</h2>
+        <ul>
+            <img src="/static/web/images/wx.jpg">
+        </ul>
+    </div>
+    {% endblock %}
+
+</div>
+
+{% endblock %}
+{% endblock %}
+
+
+
+
+
+
+
+
+
+
+{# 过度行 #}
+<div class="blank"></div>
+{# 备案号 #}
+<footer>
+  <p>Design by <a href="/">博客</a> <a href="/">蜀ICP备11002373号-1</a></p>
+</footer>
+
+<script src="{% static 'web/js/nav.js' %}"></script>
+
+</body>
+</html>

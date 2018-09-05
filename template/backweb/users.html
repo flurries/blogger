@@ -1,0 +1,66 @@
+{% extends 'backweb/backbash.html' %}
+{% block title %}
+    用户列表
+{% endblock %}
+{% block cssjs %}
+    {{ block.super }}
+{% endblock %}
+{% block content %}
+{# 文章展示 #}
+<section class="rt_wrap content mCustomScrollbar">
+    <div class="rt_content">
+        <div class="page_title">
+            <h2 class="fl">用户信息</h2>
+            <a class="fr top_rt_btn"  href="{% url 'backweb:add' %}" >添加文章</a>
+        </div>
+        <section class="mtb">
+            <select class="select">
+                <option>搜索方式</option>
+                <option>类型</option>
+            </select>
+            <input type="text" class="textbox textbox_225" placeholder="输入文章关键词..."/>
+            <input type="button" value="搜索" class="group_btn"/>
+        </section>
+        {# 表格 #}
+        <table class="table">
+            {# 表格表头 #}
+            <tr>
+                <th>编号</th>
+                <th>用户名</th>
+                 <th>超管</th>
+                <th>角色</th>
+                <th>权限</th>
+                <th>创建时间</th>
+                <th>编辑</th>
+            </tr>
+            {# 表格内容 #}
+            {% for user in users %}
+            <tr>
+                {# 编号 #}
+                <td style="text-align: center">{{ forloop.counter }} </td>
+                {# 用户名 #}
+                <td class="center">{{ user.username }}{#超管 #}
+                <td class="center">{{ user.is_superuser }}
+                {# 角色 #}
+                <td class="center">{{ user.r_u.r_name}}
+                {# 权限 #}
+                <td class="center">
+                {%  for p in  user.r_u.r_p.filter  %}
+                    {{ p.p_name }}
+                {% endfor %}
+                </td>
+                {# 创建时间 #}
+                <td class="center">{{ user.create_time }}</td>
+                <td class="center">
+                    <a href="{% url 'backweb:user_role' %}" title="编辑权限" class="link_icon">&#47;</a>
+                    <a href="/backweb/delete/{{ user.id }}" title="删除" class="link_icon">&#100;</a>
+                </td>
+                <tr>
+            {% endfor %}
+        </table>
+        </aside>
+    </div>
+</section>
+{% endblock %}
+
+

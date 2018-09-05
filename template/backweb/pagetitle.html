@@ -1,0 +1,166 @@
+{% extends 'backweb/backbash.html' %}
+{% block title %}
+    后台管理主页
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+{% block content %}
+{# 文章展示 #}
+<section class="rt_wrap content mCustomScrollbar">
+    <div class="rt_content">
+        <div class="page_title">
+            <h2 class="fl">文章分页展示</h2>
+            {# 权限判定 #}
+            {% if 'add' in user.pres %}
+                <a class="fr top_rt_btn"  href="{% url 'backweb:add' %}" >添加文章</a>
+            {% endif %}
+        </div>
+        {# 下拉栏 #}
+        <section class="mtb">
+            <select  class="select" id="select">
+                <option>分类</option>
+                {% for type in types %}
+                    {% if type.name == modl %}
+                        <option selected="selected">{{ type.name }}</option>
+                    {% else %}
+                        <option>{{ type.name }}</option>
+                    {% endif %}
+                {% endfor %}
+            {% csrf_token %}
+            <input  id="keyboard" class="textbox textbox_225" type="text" placeholder="输入标题关键...">
+            <input name="Submit" class="group_btn" value="搜索" type="submit">
+            </select>
+        </section>
+        {# 下拉栏js #}
+        <script>
+            window.onload = function() {
+                var selectObj = document.getElementById("select");
+                console.log('页面加载完成加载下拉框触发事件')
+                selectObj.onchange = function() {
+                    console.log($('select option:checked').text())
+                    location.href = '{% url 'backweb:pagetitle/' %}?page=1&type=' + $("select option:checked").text()
+                }
+            }
+        </script>
+        {# 搜索 #}
+        <script>
+            function s() {
+                var fruitName = $("#keyboard").val().trim();
+                location.href = '/backweb/pagetitle/?pageid=1&type={{ modl }}&search=' + fruitName
+            }
+            $(".group_btn").on("click", s);
+        </script>
+        {# 表格 #}
+        <table class="table">
+            {# 表格表头 #}
+            <tr>
+                <th>编号</th>
+                <th>文章标题</th>
+                <th>图片</th>
+                <th>类型</th>
+                <th>简介</th>
+                <th>是否展示</th>
+                <th>是否推荐</th>
+                <th>操作</th>
+                <th>添加时间</th>
+                <th>修改时间</th>
+            </tr>
+             {# 表格内容 #}
+            {% for a in page %}
+            <tr>
+                {# 编号 #}
+                <td style="text-align: center">{{ forloop.counter }} </td>
+                {# 标题 #}
+                <td>{{ a.name }}</td>
+               {# 图片 #}
+               <td ><img src="/media/{{a.image}}" width="50" height="50"/></td>
+                {# 类型 #}
+                <td class="center"><strong >{{ a.ty.name }}</strong></td>
+                {# 文章简介 #}
+                <td class="center">{{ a.desc }}</td>
+                {# 是否展示 #}
+                <td class="center" id="is_delete">
+                    {% if a.is_delete %}
+                        <a title="{{ a.id }}" class="link_icon" href="#">&#89;</a>
+                    {% else %}
+                        <a title="{{ a.id }}" class="link_icon" href="#"> &#88;</a>
+                    {% endif %}
+                </td>
+                {# 是否推荐  #}
+                <td class="center" id="is_recommend">
+                    {% if a.is_recommend %}
+                        <a class="link_icon" title="{{ a.id }}"  href="#">&#89;</a>
+                    {% else %}
+                        <a class="link_icon" title="{{ a.id }}"  href="#"> &#88;</a>
+                    {% endif %}
+                </td>
+                {# 编辑删除 #}
+                <td class="center">
+                    {% if 'alter' in user.pres %}
+                          <a href="/backweb/alter/{{ a.id }}" title="编辑" class="link_icon">&#47;</a>
+                    {%  endif %}
+                    {% if 'delete' in user.pres %}
+                        <a href="/backweb/delete/{{ a.id }}" title="删除" class="link_icon">&#100;</a>
+                    {% endif %}
+                </td>
+                <td class="center">{{ a.add_time }}</td>
+                <td class="center">{{ a.mod_time }}</td>
+             <tr>
+            {% endfor %}
+        </table>
+        {# 分页 #}
+        <aside class="paging">
+            <a href="{% url 'backweb:pagetitle/' %}?page=1&type={{ modl }}&search={{ search }}">第一页</a>
+
+            {% if page.has_previous %}
+                  <a href="{% url 'backweb:pagetitle/' %}?page={{ page.previous_page_number }}&type={{ modl }}&search={{ search }}">上一页</a>
+            {% endif %}
+
+
+
+
+
+                 {% if page.has_previous %}
+                  <a href="{% url 'backweb:pagetitle/' %}?page={{ page.previous_page_number }}&type={{ modl }}&search={{ search }}">{{ page.previous_page_number }}</a>
+            {% endif %}
+                 <a style="color:black;" href="#">{{ page.number }}</a>
+                 {% if page.has_next %}
+                  <a href="{% url 'backweb:pagetitle/' %}?page={{ page.next_page_number }}&type={{ modl }}&search={{ search }}">{{ page.next_page_number }}</a>
+            {% endif %}
+
+
+            {% if page.has_next %}
+                  <a href="{% url 'backweb:pagetitle/' %}?page={{ page.next_page_number }}&type={{ modl }}&search={{ search }}">下一页</a>
+            {% endif %}
+            <a href="{% url 'backweb:pagetitle/' %}?page={{ page.paginator.num_pages }}&type={{ modl }}&search={{ search }}">最后一页</a>
+
+
+        </aside>
+    </div>
+</section>
+{# 展示、推荐js #}
+<script>
+
+    $('#is_delete a').on('click',function () {
+        id = $(this).attr('title')
+        var t =$(this)
+        $.post('/backweb/article_is_delete/', {'id': id}, function () {
+            t.text() == 'Y' ? t.html('&#88;') : t.html('&#89;');
+            alert('修改成功')
+        })
+     })
+
+    $('#is_recommend a').on('click',function () {
+        id = $(this).attr('title')
+        var t =$(this)
+        $.post('/backweb/article_is_recommend/', {'id': id}, function () {
+            t.text() == 'Y' ? t.html('&#88;') : t.html('&#89;');
+            alert('修改成功')
+        })
+     })
+
+
+</script>
+{% endblock %}
+
+

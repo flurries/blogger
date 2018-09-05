@@ -1,0 +1,29 @@
+{% extends 'backweb/backbash.html' %}
+{% block title %}
+ 角色添加
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+<section class="rt_wrap content mCustomScrollbar">
+    <div class="rt_content">
+        <section>
+            <ul class="ulColumn2">
+                  <form action=""  method="post">
+                      {% csrf_token %}
+
+                      <li>
+                         <span class="item_name" style="width:120px;">角色名称</span>
+                         <input type="text" name="r_name" class="textbox textbox_295" placeholder="角色名称"/>
+                      </li>
+                         <input type="submit"  class="link_btn"/>
+                  </form>
+
+
+
+
+
+{% endblock %}
+

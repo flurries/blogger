@@ -1,0 +1,63 @@
+{% extends 'web/bash.html' %}
+{% block title %}
+   {{ article.name }}
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+<article>
+    {# 二级标题 #}
+    <h1 class="t_nav">
+        <span>不要轻易放弃。学习成长的路上，我们长路漫漫，只因学无止境。
+        </span><a href="/" class="n1">网站首页</a><a href="/" class="n2"></a>
+    </h1>
+    {# 全部文章 #}
+    <div class="blogs">
+        <div class="mt20"></div>
+        <li>
+            <span class="blogpic"><a href="/"><img src="/media/{{ article.image }}"></a></span>
+            <h3 class="blogtitle"><a href="/">{{ article.name }}</a></h3>
+            <div class="bloginfo">
+                <p>{{ article.desc }}</p>
+            </div>
+            <div class="autor">
+                <span class="lm">
+                    <a href="{% url 'app:pagetitle' %}?pageid=1&rost={{ article.ty.id }}"  target="_blank" class="classname">{{ article.ty.name }}</a>
+                </span>
+                <span class="dtime">{{ article.mod_time }}</span>
+                <div class="autor">
+
+                    <a href="/"  target="_blank" >{% autoescape off %}{{ article.content }}{% endautoescape %}</a>
+
+                 </div>
+             </div>
+        </li>
+    </div>
+  <div class="mt20"></div>
+  {# 侧边栏 #}
+
+
+ {% block left %}
+  {{ block.super }}
+      {% block lmnav %}
+          {% endblock %}
+      {% endblock %}
+
+
+
+
+
+</article>
+
+
+
+
+
+
+{% endblock %}
+
+
+
+

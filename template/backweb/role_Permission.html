@@ -1,0 +1,32 @@
+{% extends 'backweb/backbash.html' %}
+{% block title %}
+    角色与权限关系
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+<section class="rt_wrap content mCustomScrollbar">
+    <div class="rt_content">
+        <section>
+            <ul class="ulColumn2">
+                  <form action=""  method="post">
+                      {% csrf_token %}
+                      {# 文章标题 #}
+                      <select name="r_name">
+                          {% for role in roles %}
+                              <option  value ="{{ role.r_name }}">{{ role.r_name }}</option>
+                          {% endfor %}
+                      </select>
+                      <li>
+                          {% for p in per %}
+                              <input type="checkbox" name="pers" value="{{ p.p_name }}">{{ p.p_name }}<br>
+                          {% endfor %}
+
+                      </li>
+                      <input type="submit"  class="link_btn"/>
+                  </form>
+
+
+{% endblock %}

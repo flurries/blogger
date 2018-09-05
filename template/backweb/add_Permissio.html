@@ -1,0 +1,28 @@
+{% extends 'backweb/backbash.html' %}
+{% block title %}
+    添加权限
+{% endblock %}
+{% block cssjs %}
+{% endblock %}
+
+{% block content %}
+
+<section class="rt_wrap content mCustomScrollbar">
+    <div class="rt_content">
+        <section>
+            <ul class="ulColumn2">
+                  <form action=""  method="post">
+                      {% csrf_token %}
+                      {# 添加权限#}
+                      <li>
+                         <span class="item_name" style="width:120px;">权限名称</span>
+                         <input type="text" name="p_name" class="textbox textbox_295" placeholder="权限名称"/>
+                      </li>
+                         <input type="submit"  class="link_btn"/>
+                  </form>
+
+
+
+
+
+{% endblock %}
